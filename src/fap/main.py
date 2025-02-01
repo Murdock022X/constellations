@@ -2,6 +2,7 @@ import os
 import yaml
 from fastapi import FastAPI
 from utils.constellation import Constellation
+from utils.search import SearchUtils
 
 DATA_DIR = "data/"
 
@@ -20,6 +21,6 @@ async def root():
 
 @app.post("/search_const")
 async def search():
-	return sky
+	return SearchUtils.search("dummy")
 	
 
