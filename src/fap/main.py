@@ -27,5 +27,3 @@ async def root():
 @app.post("/search_const")
 async def search(req: SearchRequest):
 	return SearchUtils.search(sky, req.name)
-
-
