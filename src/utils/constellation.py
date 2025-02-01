@@ -36,8 +36,20 @@ class Constellation:
 
             if edges is not None:
                 for dst_file, attrs in edges.items():
-                    dst_node: Node = self.vertices[dst_file]
-                    edge = Edge(dst_node, attrs[0], attrs[1])
-                    src_node.add_edge(edge)
+                    dst_node: Node = self.get_star(dst_file)
+                    self.add_edge(src_node, dst_node, attrs[0], attrs[1])
 
-        print(self.vertices)
+    def add_star(self, name: str):
+        assert(name not in self.vertices.keys())
+        self.vertices[name] = Node(name)
+    
+    def add_edge(self, source_star: Node, dest_star: Node, comment: str, color: str):
+        assert(source_star.filename in self.vertices.keys())
+        assert(dest_star.filename in self.vertices.keys())
+        edge = Edge(dest_star, comment, color)
+        source_star.add_edge(edge)
+
+    def get_star(self, name: str) -> Node:
+        return self.vertices[name]
+
+

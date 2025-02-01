@@ -5,7 +5,7 @@ from utils.constellation import Constellation
 from utils.search import SearchUtils
 from pydantic import BaseModel
 
-DATA_DIR = "data/"
+DATA_DIR = "data/sample.yml"
 
 app = FastAPI()
 
@@ -13,11 +13,12 @@ class SearchRequest(BaseModel):
 	name: str
 
 sky = []
-for fname in os.listdir(DATA_DIR):
-	with open(DATA_DIR+fname) as f:
-		yml = yaml.safe_load(f)
-		con = Constellation(fname, yml)
-		sky.append(con)
+with open(DATA_DIR) as f:
+	yml = yaml.safe_load(f)
+
+for name in yml:
+	con = Constellation(name, yml[name])
+	sky.append(con)
 
 @app.get("/")
 async def root():
