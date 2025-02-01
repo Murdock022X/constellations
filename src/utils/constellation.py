@@ -4,6 +4,11 @@ class Node:
         self.filename = filename
         self.edges = set()
 
+    def __str__(self):
+        return "{} -> ".format(self.filename) + ",".join([str(edge) for edge in self.edges])
+    
+    __repr__ = __str__
+
     def add_edge(self, edge):
         self.edges.add(edge)
 
@@ -12,6 +17,11 @@ class Edge:
         self.node = node
         self.annotation = annotation
         self.color = correlation_color
+
+    def __str__(self):
+        return "Edge to: {}, anno: {}, color: {}".format(self.node.filename, self.annotation, self.color)
+
+    __repr__ = __str__
 
 class Constellation:
     def __init__(self, name: str, yaml_dict: dict):
@@ -24,7 +34,10 @@ class Constellation:
         for vertex_filename, edges in yaml_dict.items():
             src_node: Node = self.vertices[vertex_filename]
 
-            for dst_file, attrs in edges.items():
-                dst_node: Node = self.vertices[dst_file]
-                edge = Edge(dst_node, attrs[0], attrs[1])
-                src_node.add_edge(edge)
+            if edges is not None:
+                for dst_file, attrs in edges.items():
+                    dst_node: Node = self.vertices[dst_file]
+                    edge = Edge(dst_node, attrs[0], attrs[1])
+                    src_node.add_edge(edge)
+
+        print(self.vertices)
