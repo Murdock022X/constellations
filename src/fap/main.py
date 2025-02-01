@@ -12,13 +12,13 @@ app = FastAPI()
 class SearchRequest(BaseModel):
 	name: str
 
-sky = []
+sky = {}
 with open(DATA_DIR) as f:
 	yml = yaml.safe_load(f)
 
 for name in yml:
 	con = Constellation(name, yml[name])
-	sky.append(con)
+	sky[name] = con
 
 @app.get("/")
 async def root():

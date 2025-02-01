@@ -14,21 +14,3 @@ my_constellation:
 
     file3:
 
-venus:
-    file1:
-      file2:
-        - comment
-        - color
-      file3:
-        - comment3
-        - color3
-    file2:
-      file3:
-        - comment-k
-        - color-rgb
-
-    file3:
-      file1:
-        - comment-k
-        - color-rgb
-

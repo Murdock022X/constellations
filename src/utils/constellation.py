@@ -52,4 +52,7 @@ class Constellation:
     def get_star(self, name: str) -> Node:
         return self.vertices[name]
 
+    def get_all_stars(self) -> list[Node]:
+        return self.vertices
+
 
