@@ -57,7 +57,7 @@ class Constellation:
     def get_all_stars(self) -> list[Node]:
         return self.vertices
     
-    def traverse_files(self, dir: str, ignore_ext=[]):
+    def traverse_files(self, dir: str, ignore_ext=["pyc", "py"]):
         assert(os.path.isdir(dir))
         dirs = list(os.walk(dir, followlinks=False))
         for sub in dirs:
@@ -66,6 +66,12 @@ class Constellation:
                     ext = fname.split('.').pop()
                     if not ext in ignore_ext:
                         self.add_star(fname)
+    
+    def to_yaml(self):
+        resp = f"{self.name}:"
+        for v in self.vertices.keys():
+            resp += f"\n\t{v}:"
+        return resp
 
 
 
