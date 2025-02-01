@@ -14,8 +14,9 @@ class Edge:
         self.color = correlation_color
 
 class Constellation:
-    def __init__(self, yaml_dict):
-        self.vertices = {}
+    def __init__(self, name: str, yaml_dict: dict):
+        self.name = name
+        self.vertices: dict = {}
 
         for vertex_filename, edges in yaml_dict.items():
             self.vertices[vertex_filename] = Node(vertex_filename)
@@ -23,7 +24,7 @@ class Constellation:
         for vertex_filename, edges in yaml_dict.items():
             src_node: Node = self.vertices[vertex_filename]
 
-            for edge in edges:
-                dst_node: Node = self.vertices[edge[0]]
-                edge = Edge(dst_node, edge[1], edge[2])
+            for dst_file, attrs in edges.items():
+                dst_node: Node = self.vertices[dst_file]
+                edge = Edge(dst_node, attrs[0], attrs[1])
                 src_node.add_edge(edge)
