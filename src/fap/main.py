@@ -13,6 +13,12 @@ DATA_DIR = "data/sample.yml"
 
 app = FastAPI()
 
+class ConstellationRequest(BaseModel):
+	constellation: str
+	
+class StarRequest(BaseModel):
+	name: str
+
 class SearchRequest(BaseModel):
 	name: str
 
@@ -34,15 +40,16 @@ async def root(request: Request):
     return templates.TemplateResponse(request=request, name="observatory.html")
 
 @app.post("/get-constellation")
-async def get_constellation(request: Request):
-	
-    print(request.get("constellation"))
-
-    constellation = request.get("constellation")
+async def get_constellation(constellation_request: ConstellationRequest):
+    constellation = constellation_request.constellation
 	
     c: Constellation = sky[constellation]
 
     return json.dumps(c.vertices.keys(), indent=4, default=str)
+
+@app.post("/star-info", response_class=HTMLResponse)
+async def star_info(star_req: StarRequest):
+	return templates.TemplateResponse(request=star_req, name="star_info.html")
 
 @app.post("/search_const")
 async def search(req: SearchRequest):
