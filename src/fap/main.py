@@ -1,9 +1,13 @@
 import os
 import yaml
-from fastapi import FastAPI
 from utils.constellation import Constellation
-from utils.search import SearchUtils
+from fastapi import FastAPI, Request
+from fastapi.responses import HTMLResponse
+from fastapi.templating import Jinja2Templates
+from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
+from utils.search import SearchUtils
+import json
 
 DATA_DIR = "data/sample.yml"
 
@@ -20,9 +24,25 @@ for name in yml:
 	con = Constellation(name, yml[name])
 	sky[name] = con
 
-@app.get("/")
-async def root():
-    return "<h1>gay<h1>"
+templates = Jinja2Templates(directory="templates")
+app.mount("/static", StaticFiles(directory="static", html=True), name="static")
+
+@app.get("/", response_class=HTMLResponse)
+@app.get("/observatory", response_class=HTMLResponse)
+async def root(request: Request):
+    print(sky)
+    return templates.TemplateResponse(request=request, name="observatory.html")
+
+@app.post("/get-constellation")
+async def get_constellation(request: Request):
+	
+    print(request.get("constellation"))
+
+    constellation = request.get("constellation")
+	
+    c: Constellation = sky[constellation]
+
+    return json.dumps(c.vertices.keys(), indent=4, default=str)
 
 @app.post("/search_const")
 async def search(req: SearchRequest):
