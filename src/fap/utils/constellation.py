@@ -1,3 +1,4 @@
+import os.path
 
 class Node:
     def __init__(self, filename):
@@ -31,6 +32,7 @@ class Constellation:
         for vertex_filename, edges in yaml_dict.items():
             self.vertices[vertex_filename] = Node(vertex_filename)
 
+
         for vertex_filename, edges in yaml_dict.items():
             src_node: Node = self.vertices[vertex_filename]
 
@@ -54,5 +56,17 @@ class Constellation:
 
     def get_all_stars(self) -> list[Node]:
         return self.vertices
+    
+    def traverse_files(self, dir: str, ignore_ext=[]):
+        assert(os.path.isdir(dir))
+        dirs = list(os.walk(dir, followlinks=False))
+        for sub in dirs:
+            if sub[2]:
+                for fname in sub[2]:
+                    ext = fname.split('.').pop()
+                    if not ext in ignore_ext:
+                        self.add_star(fname)
+
+
 
 
