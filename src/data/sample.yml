@@ -1,0 +1,16 @@
+
+my_constellation:
+    file1:
+      file2:
+        - comment
+        - color
+      file3:
+        - comment3
+        - color3
+    file2:
+      file3:
+        - comment-k
+        - color-rgb
+
+    file3:
+
