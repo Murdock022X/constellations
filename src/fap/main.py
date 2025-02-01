@@ -4,5 +4,5 @@ app = FastAPI()
 
 @app.get("/")
 async def root():
-    return {"message": "fap"}
+    return "<h1> gay<h1>"
 
