@@ -1,4 +1,3 @@
-import os
 import yaml
 from utils.constellation import Constellation
 from fastapi import FastAPI, Request
