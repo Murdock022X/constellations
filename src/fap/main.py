@@ -3,10 +3,14 @@ import yaml
 from fastapi import FastAPI
 from utils.constellation import Constellation
 from utils.search import SearchUtils
+from pydantic import BaseModel
 
 DATA_DIR = "data/"
 
 app = FastAPI()
+
+class SearchRequest(BaseModel):
+	name: str
 
 sky = []
 for fname in os.listdir(DATA_DIR):
@@ -17,10 +21,10 @@ for fname in os.listdir(DATA_DIR):
 
 @app.get("/")
 async def root():
-    return "<h1> gay<h1>"
+    return "<h1>gay<h1>"
 
 @app.post("/search_const")
-async def search():
-	return SearchUtils.search("dummy")
-	
+async def search(req: SearchRequest):
+	return SearchUtils.search(sky, req.name)
+
 
